@@ -1,12 +1,14 @@
 import assert from "@dashkite/assert"
-import {test, success} from "@dashkite/amen"
+import { test, success } from "@dashkite/amen"
 import print from "@dashkite/amen-console"
+
+import initializer from "../src/"
 
 do ->
 
   print await test "Genie Coffee", [
 
-    test "todo"
+    test "import"
 
   ]
 

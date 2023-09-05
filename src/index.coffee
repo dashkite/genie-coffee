@@ -1,20 +1,26 @@
 import * as M from "@dashkite/masonry"
 import { coffee } from "@dashkite/masonry-coffee"
 
-export default ( genie ) ->
+defaults =
+  glob: [
+    "src/**/*.coffee"
+    "test/**/*.coffee"
+  ]
+  preset: "node"
 
-  options = genie.get "coffee"
+export default ( G ) ->
+
+  options = { defaults..., ( G.get "coffee" )... }
   
-  genie.on "build", "coffee"
+  G.on "build", "coffee"
 
-  genie.define "coffee", "clean", M.start [
-    M.glob options.glob ? [
-      "src/**/*.coffee"
-      "test/**/*.coffee"
-    ]
+  G.define "coffee", "clean", M.start [
+    M.glob options.glob
     M.read
     M.set "build", -> options.build ? preset: "node"
     M.tr coffee
     M.extension ".js"
     M.write "build/node"
   ]
+
+  G.on "clean", M.rm "build"

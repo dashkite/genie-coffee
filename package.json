@@ -13,27 +13,27 @@
   },
   "license": "SEE LICENSE IN LICENSE.md",
   "author": "Daniel Yoder",
-  "exports": {
-    ".": {
-      "browser": "./build/browser/src/index.js",
-      "node": "./build/node/src/index.js"
-    }
-  },
-  "main": "build/node/src/index.js",
   "files": [
-    "build/browser/src",
-    "build/node/src"
+    "build/src"
   ],
+  "exports": {
+    ".": "./build/src/index.js"
+  },
   "scripts": {
     "test": "genie test",
     "build": "genie build"
   },
   "devDependencies": {
+    "@babel/core": "7.22.15",
+    "@babel/preset-env": "7.22.15",
     "@dashkite/amen": "^0.2.0",
     "@dashkite/amen-console": "^0.0.2",
     "@dashkite/assert": "^0.1.4",
-    "@dashkite/genie": "link:../genie"
+    "@dashkite/genie": "link:../genie",
+    "babel-plugin-autocomplete-index": "^0.2.0"
   },
   "dependencies": {
+    "@dashkite/masonry": "link:../masonry",
+    "@dashkite/masonry-coffee": "link:../masonry-coffee"
   }
 }
