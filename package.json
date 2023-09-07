@@ -17,7 +17,8 @@
     "build/src"
   ],
   "exports": {
-    ".": "./build/src/index.js"
+    ".": "./build/src/index.js",
+    "./*": "./build/src/*.js"
   },
   "scripts": {
     "test": "genie test",
