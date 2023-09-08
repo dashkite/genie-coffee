@@ -11,6 +11,9 @@ dependencies:
   '@dashkite/masonry-coffee':
     specifier: link:../masonry-coffee
     version: link:../masonry-coffee
+  '@dashkite/masonry-targets':
+    specifier: link:../masonry-targets
+    version: link:../masonry-targets
 
 devDependencies:
   '@babel/core':

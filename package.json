@@ -21,8 +21,8 @@
     "./*": "./build/src/*.js"
   },
   "scripts": {
-    "test": "genie test",
-    "build": "genie build"
+    "build": "scripts/build",
+    "test": "scripts/test"
   },
   "devDependencies": {
     "@babel/core": "7.22.15",
@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@dashkite/masonry": "link:../masonry",
-    "@dashkite/masonry-coffee": "link:../masonry-coffee"
+    "@dashkite/masonry-coffee": "link:../masonry-coffee",
+    "@dashkite/masonry-targets": "link:../masonry-targets"
   }
 }

@@ -1,22 +1,17 @@
-import * as M from "@dashkite/masonry"
-import coffee from "@dashkite/masonry-coffee"
-
-install = ( G, { preset, glob, target }) ->
-  
-  G.define "clean:#{ preset }", M.rm target
-
-  G.define "coffee:#{ preset }", "clean:#{ preset }", M.start [
-    M.glob glob
-    M.read
-    M.set "build", -> { preset, glob, target }
-    M.tr coffee
-    M.extension ".js"
-    M.write target
-  ]
-
-  G.on "build", "coffee:#{ preset }"
-
+import FS from "node:fs/promises"
+import Path from "node:path"
 import { command as exec } from "execa"
+
+# TODO where do these go?
+#      Don't fit Masonry's iterator-based model
+
+rm = ( target ) ->
+  try
+    await FS.rm target, recursive: true
+  catch error
+    unless error.message.startsWith "ENOENT"
+      throw error
+
 
 sh = ( action, options ) ->
   result = await exec action, 
@@ -25,4 +20,4 @@ sh = ( action, options ) ->
     throw new Error result.stderr
   else result
 
-export { install, sh }
+export { rm, sh }
