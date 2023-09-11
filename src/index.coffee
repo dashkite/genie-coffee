@@ -51,6 +51,6 @@ export default ( Genie ) ->
         --enable-source-maps
         --trace-warnings
         --unhandled-rejections=strict
-        #{ options.target }/test/index.js"
+        build/node/test/index.js"
 
     Genie.on "test", "node:test"
