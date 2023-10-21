@@ -1,10 +1,6 @@
 import M from "@dashkite/masonry"
 import coffee from "@dashkite/masonry-coffee"
 import T from "@dashkite/masonry-targets"
-import W from "@dashkite/masonry-targets/watch"
-import * as Pred from "@dashkite/joy/predicate"
-import * as It from "@dashkite/joy/iterable"
-import * as Fn from "@dashkite/joy/function"
 import { rm, sh } from "./helpers"
 
 defaults =
@@ -46,24 +42,6 @@ export default ( Genie ) ->
   Genie.on "clean", -> rm "build"
 
   Genie.on "build", "coffee"
-
-  Genie.define "coffee:watch", M.start [
-    W.glob options.targets
-    W.match type: "file", name: [ "add", "change" ], [
-      M.read
-      M.tr coffee
-      M.extension ".js"
-      T.write "build/${ build.target }"
-    ]
-    W.match type: "file", name: "rm", [
-      M.extension ".js"
-      T.rm "build/${ build.target }"
-    ]
-    W.match type: "directory", name: "rm", 
-      T.rm "build/${ build.target }"        
-  ]
-
-  Genie.on "watch", "coffee:watch&"
 
 
   # TODO separate this into separate preset?

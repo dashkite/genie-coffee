@@ -2,9 +2,6 @@ import FS from "node:fs/promises"
 import Path from "node:path"
 import { command as exec } from "execa"
 
-# TODO where do these go?
-#      Don't fit Masonry's iterator-based model
-
 rm = ( target ) ->
   try
     await FS.rm target, recursive: true
