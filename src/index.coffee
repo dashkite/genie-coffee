@@ -31,7 +31,7 @@ export default ( Genie ) ->
   if Array.isArray options.targets
     options.targets = expand options.targets
   
-  Genie.define "coffee", "clean", M.start [
+  Genie.define "coffee", "coffee:clean", M.start [
     T.glob options.targets
     M.read
     M.tr coffee
@@ -39,7 +39,8 @@ export default ( Genie ) ->
     T.write "build/${ build.target }"
   ]
 
-  Genie.on "clean", -> rm "build"
+  Genie.define "coffee:clean", -> rm "build"
+  Genie.on "clean", "coffee:clean"
 
   Genie.on "build", "coffee"
 
