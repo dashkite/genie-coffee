@@ -2,6 +2,7 @@ import M from "@dashkite/masonry"
 import coffee from "@dashkite/masonry-coffee"
 import T from "@dashkite/masonry-targets"
 import { rm, sh } from "./helpers"
+import lint from "./helpers/lint"
 
 defaults =
   targets:
@@ -35,6 +36,15 @@ export default ( Genie ) ->
     T.glob options.targets
     M.read
     M.tr coffee
+    M.extension ".js"
+    T.write "build/${ build.target }"
+  ]
+
+  Genie.define "coffee:lint", "coffee:clean", M.start [
+    T.glob options.targets
+    M.read
+    M.tr coffee
+    lint
     M.extension ".js"
     T.write "build/${ build.target }"
   ]
@@ -75,3 +85,5 @@ export default ( Genie ) ->
     ]
 
   Genie.on "watch", "coffee:watch&"
+
+  Genie.on "lint", "coffee:lint"
