@@ -1,89 +1,50 @@
 import M from "@dashkite/masonry"
 import coffee from "@dashkite/masonry-coffee"
 import T from "@dashkite/masonry-targets"
-import { rm, sh } from "./helpers"
+import { sh, exists } from "./helpers"
 import lint from "./helpers/lint"
-
-defaults =
-  targets:
-    node: [
-      glob: [
-        "src/**/*.coffee"
-        "test/**/*.coffee"
-      ]
-    ]
-    browser: [
-      glob: [
-        "src/**/*.coffee"
-        "test/**/*.coffee"
-      ]
-    ]
-
-expand = ( targets ) ->
-  result = {}
-  for target in targets
-    result[ target ] = defaults.targets[ target ]
-  result
+import Options from "./helpers/options"
 
 export default ( Genie ) ->
-  
-  options = { defaults..., ( Genie.get "coffee" )... }
 
-  if Array.isArray options.targets
-    options.targets = expand options.targets
+  { targets } = Options.get Genie
   
-  Genie.define "coffee", "coffee:clean", M.start [
-    T.glob options.targets
+  Genie.define "coffee:build", "coffee:clean", M.start [
+    T.glob targets
     M.read
     M.tr coffee
     M.extension ".js"
-    T.write "build/${ build.target }"
+    T.write "build/${ build.preset }"
   ]
 
+  # alias
+  Genie.define "coffee", "coffee:build"
+  
+  Genie.on "build", "coffee:build"
+
+  Genie.define "coffee:clean", "clean"
+
   Genie.define "coffee:lint", "coffee:clean", M.start [
-    T.glob options.targets
+    T.glob targets
     M.read
     M.tr coffee
     lint
+    # we write out the code so that we can reference it
+    # in case we want to see why lint is complaining
     M.extension ".js"
-    T.write "build/${ build.target }"
+    T.write "build/${ build.preset }"
   ]
-
-  Genie.define "coffee:clean", -> rm "build"
-  Genie.on "clean", "coffee:clean"
-
-  Genie.on "build", "coffee"
-
-  # TODO separate this into separate preset?
-
-  if options.targets.node?
-    Genie.define "node:test", "build", ->
+  
+  Genie.define "coffee:test", "build", ->
+    if await exists "build/node/test/index.js"
       sh "node
         --enable-source-maps
         --trace-warnings
         --unhandled-rejections=strict
         build/node/test/index.js"
+    else
+      console.warn "no tests defined"
 
-    Genie.on "test", "node:test"
-
-  Genie.define "coffee:watch", ->
-    W = await import( "@dashkite/masonry-watch" )
-    do M.start [
-      W.glob options.targets
-      W.match type: "file", name: [ "add", "change" ], [
-        M.read
-        M.tr coffee
-        M.extension ".js"
-        T.write "build/${ build.target }"
-      ]
-      W.match type: "file", name: "rm", [
-        M.extension ".js"
-        T.rm "build/${ build.target }"
-      ]
-      W.match type: "directory", name: "rm", 
-        T.rm "build/${ build.target }"        
-    ]
-
-  Genie.on "watch", "coffee:watch&"
+  Genie.on "test", "coffee:test"
 
   Genie.on "lint", "coffee:lint"

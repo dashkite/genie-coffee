@@ -2,13 +2,12 @@ import FS from "node:fs/promises"
 import Path from "node:path"
 import { command as exec } from "execa"
 
-rm = ( target ) ->
+exists = ( path ) ->
   try
-    await FS.rm target, recursive: true
-  catch error
-    unless error.message.startsWith "ENOENT"
-      throw error
-
+    await FS.readFile path
+    true
+  catch
+    false
 
 sh = ( action, options ) ->
   result = await exec action, 
@@ -17,4 +16,4 @@ sh = ( action, options ) ->
     throw new Error result.stderr
   else result
 
-export { rm, sh }
+export { exists, sh }

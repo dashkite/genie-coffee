@@ -17,9 +17,6 @@ dependencies:
   '@dashkite/masonry-watch':
     specifier: link:../masonry-watch
     version: link:../masonry-watch
-  chalk:
-    specifier: '4'
-    version: 4.1.2
   eslint:
     specifier: ^8.56.0
     version: 8.56.0
