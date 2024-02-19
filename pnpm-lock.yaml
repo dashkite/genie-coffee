@@ -14,9 +14,6 @@ dependencies:
   '@dashkite/masonry-targets':
     specifier: link:../masonry-targets
     version: link:../masonry-targets
-  '@dashkite/masonry-watch':
-    specifier: link:../masonry-watch
-    version: link:../masonry-watch
   eslint:
     specifier: ^8.56.0
     version: 8.56.0

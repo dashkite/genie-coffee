@@ -38,7 +38,6 @@
     "@dashkite/masonry": "link:../masonry",
     "@dashkite/masonry-coffee": "link:../masonry-coffee",
     "@dashkite/masonry-targets": "link:../masonry-targets",
-    "@dashkite/masonry-watch": "link:../masonry-watch",
     "eslint": "^8.56.0",
     "execa": "5"
   }
