@@ -37,13 +37,6 @@ linter = new ESLint
       # "max-lines-per-function": "warn"
       "max-params": "warn"
       "new-cap": "warn"
-      # TODO unfortunately the CS transpiler makes
-      # it difficult for the linter to distinguish between
-      # the use an initilization of magic numbers
-      # "no-magic-numbers": [
-      #   "warn"
-      #   ignore: [ -2, -1, 0, 1, 2 ]
-      # ]
       "no-useless-catch": "warn"
       "no-useless-call": "warn"
       "no-useless-computed-key": "warn"
