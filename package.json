@@ -23,7 +23,7 @@
   "scripts": {
     "build": "scripts/build",
     "test": "scripts/test",
-    "release": "scripts/release"
+    "release": "genie release"
   },
   "devDependencies": {
     "@babel/core": "7.22.15",
