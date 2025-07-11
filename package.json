@@ -22,7 +22,8 @@
   },
   "scripts": {
     "build": "scripts/build",
-    "test": "scripts/test"
+    "test": "scripts/test",
+    "release": "scripts/release"
   },
   "devDependencies": {
     "@babel/core": "7.22.15",
