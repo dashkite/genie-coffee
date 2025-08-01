@@ -1,6 +1,6 @@
 {
   "name": "@dashkite/genie-coffee",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "description": "Genie Preset for compiling CoffeeScript",
   "keywords": [],
   "homepage": "https://github.com/dashkite/genie-coffee#readme",
