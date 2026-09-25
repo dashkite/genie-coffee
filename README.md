@@ -65,6 +65,8 @@ npx genie coffee:audit:clean
 
 Genie Coffee includes a dedicated lint task (`coffee:lint`) defined as a hook for Genie's standard `lint` lifecycle task (`Genie.on "lint", "coffee:lint"`) rather than an alias, allowing other linters (such as for other file types or languages) to run in concert.
 
+The lint task operates incrementally. On each run, it compares the `mtime` of every source file against a cached marker stored in `.genie/coffee/lint/`. If a file has not changed, the cached diagnostic output is replayed without re-invoking ESLint or the custom rule engine, keeping repeated runs fast during iterative development and Continuous Alignment loops.
+
 ### Source Map Transposition
 
 Although lint rules evaluate the compiled JavaScript output, Genie Coffee decodes the composite source map to transpose line and column numbers back to the original `.coffee` source files. Each diagnostic is paired with an excerpt of the original CoffeeScript source code where the issue occurred.
