@@ -1,0 +1,43 @@
+- id: single-quotes
+  pattern: >-
+    '[^']*'
+  negative_lookahead: >-
+    "[^"]*'[^']*'[^"]*"
+  message: "Single quotes used. Use double quotes exclusively."
+  severity: 2
+  strip: false
+
+- id: english-operators
+  pattern: >-
+    \b(and|or|not|is|isnt)\b
+  message: "Forbidden English operator. Use symbolic equivalent (&&, ||, !, ==, !=)."
+  severity: 2
+  strip: true
+  fix:
+    and: "&&"
+    or: "||"
+    not: "!"
+    is: "=="
+    isnt: "!="
+
+- id: postfix-return
+  pattern: >-
+    \breturn\b.*\b(if|unless)\b
+  message: "Postfix conditional with return. Use structural if/else."
+  severity: 2
+  strip: true
+
+- id: c-style-execution
+  pattern: >-
+    ([a-zA-Z0-9_]+)\((?!\))
+  message: "C-style function execution. Use Lisp-style space-wrapped evaluation or omit parens."
+  severity: 2
+  strip: true
+  fix: "$1 ("
+
+- id: line-length
+  pattern: >-
+    ^.{101,}$
+  message: "Line exceeds 100 characters."
+  severity: 1
+  strip: false
