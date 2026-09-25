@@ -54,6 +54,13 @@ npx genie coffee:lint
 npx genie coffee:audit
 ```
 
+To purge the internal task caches, use the dedicated clean subtasks:
+
+```bash
+npx genie coffee:lint:clean
+npx genie coffee:audit:clean
+```
+
 ## Linting
 
 Genie Coffee includes a dedicated lint task (`coffee:lint`) defined as a hook for Genie's standard `lint` lifecycle task (`Genie.on "lint", "coffee:lint"`) rather than an alias, allowing other linters (such as for other file types or languages) to run in concert.
@@ -100,7 +107,7 @@ In this mode, ANSI formatting and decorative glyphs are suppressed. Diagnostics 
 
 Genie Coffee includes a semantic audit pipeline (`coffee:audit`) designed to evaluate subjective, architectural DashKite coding guidelines that cannot be caught by regex or ESLint.
 
-When the audit task runs, it utilizes the embedded generative language model to semantically parse the original `.coffee` files against the prompt-engineered guidelines defined in `src/helpers/audit-rules.yaml`. Just like `lint`, it operates incrementally and caches results inside `.masonry/audit` to avoid superfluous LLM evaluations on unchanged files. 
+When the audit task runs, it utilizes the embedded generative language model to semantically parse the original `.coffee` files against the prompt-engineered guidelines defined in `src/helpers/audit-rules.yaml`. Just like `lint`, it operates incrementally and caches results inside `.genie/coffee/audit` to avoid superfluous LLM evaluations on unchanged files.
 
 Violations are emitted using the same structured XML `issue` format as the linter, making them seamlessly consumable by Antigravity agents during Continuous Alignment loops.
 

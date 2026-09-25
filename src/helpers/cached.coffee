@@ -4,7 +4,7 @@ import Path from "node:path"
 export default ( name, fx ) ->
   ( context ) ->
     sourcePath = Path.join (context.root ? "."), context.source.path
-    cachePath = Path.join ".masonry", name, context.source.path
+    cachePath = Path.join ".genie/coffee", name, context.source.path
     
     try
       sourceStat = await FS.stat sourcePath

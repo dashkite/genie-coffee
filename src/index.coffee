@@ -40,7 +40,7 @@ export default ( Genie ) ->
   ]
   
   Genie.define "coffee:lint:clean", ->
-    sh "rm -rf .masonry/lint"
+    sh "rm -rf .genie/coffee/lint"
 
   Genie.on "lint:clean", "coffee:lint:clean"
   
@@ -63,7 +63,7 @@ export default ( Genie ) ->
   Genie.on "audit", "coffee:audit"
 
   Genie.define "coffee:audit:clean", ->
-    sh "rm -rf .masonry/audit"
+    sh "rm -rf .genie/coffee/audit"
 
   Genie.on "audit:clean", "coffee:audit:clean"
 

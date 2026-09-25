@@ -10,14 +10,14 @@ fix = ( context ) ->
   return context unless input?
   
   # Read issues from the lint cache directly
-  cachePath = path.join ".masonry", "lint", source.path
+  cachePath = path.join ".genie/coffee", "lint", source.path
   try
     data = JSON.parse fs.readFileSync cachePath, "utf8"
     fileIssues = data.issues ? []
   catch
     fileIssues = []
     
-  if fs.existsSync(path.join ".masonry", "lint")
+  if fs.existsSync(path.join ".genie/coffee", "lint")
     # If the cache directory exists, we strictly follow the cache
     return context if fileIssues.length == 0
     activeCodes = new Set(fileIssues.map (i) -> i.code)

@@ -46,3 +46,11 @@ For subjective or complex structural DashKite coding guidelines that cannot be d
 To instruct the agent to evaluate the codebase against new architectural guidelines, add a rule to `src/helpers/audit-rules.yaml`. Each rule requires only:
 - `title`: A succinct name for the guideline.
 - `description`: A thorough, prompt-engineered explanation of the anti-pattern, including context on why it violates the guidelines and what valid alternatives look like.
+
+### Task Output Caching
+
+To optimize the execution speed of continuous alignment loops and LLM-driven semantic tasks, `genie-coffee` implements a robust output caching combinator (`src/helpers/cached.coffee`). 
+
+Instead of caching mere boolean success states, the caching combinator evaluates the `mtime` of the source file and serializes structured output state (like diagnostic XML block strings and associated metadata arrays) directly into a `.json` cache marker file stored in `.genie/coffee/<task_name>/`. 
+
+When a subsequent run evaluates an unmodified file, the combinator bypasses CPU-heavy execution (such as LLM generation or AST parsing) entirely, and seamlessly deserializes the cached output state back into the pipeline context. This mechanism enables downstream combinators (like `report` or `fix`) to perform their duties statelessly, oblivious to whether the data was freshly generated or loaded from the cache.
