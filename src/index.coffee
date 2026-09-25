@@ -5,6 +5,7 @@ import { sh, exists } from "./helpers"
 import lint from "./helpers/lint"
 import fix from "./helpers/fix"
 import audit from "./helpers/audit"
+import report from "./helpers/report"
 import Options from "./helpers/options"
 
 import cached from "./helpers/cached"
@@ -35,6 +36,7 @@ export default ( Genie ) ->
       M.tr coffee
       lint
     ]
+    report
   ]
   
   Genie.define "coffee:lint:clean", ->

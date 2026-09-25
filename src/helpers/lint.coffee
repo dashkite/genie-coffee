@@ -166,44 +166,41 @@ lint = do ({ warn, error } = {}) ->
     sourceMap = extractSourceMap output
     lines = input?.split "\n"
     
+    context.issues = []
+    context.cacheable ?= []
+    context.cacheable.push "issues"
+    
     results = await linter.lintText output, filePath: source.path
     
     hasPrintedHeader = false
-    printHeader = ->
-      return if hasPrintedHeader
-      console.warn newline, chalk.cyan.bold "  ◆ #{ source.path }" if isPretty()
-      hasPrintedHeader = true
+    getHeader = ->
+      if not hasPrintedHeader
+        hasPrintedHeader = true
+        if isPretty() then newline + chalk.cyan.bold("  ◆ #{ source.path }") else ""
+      else ""
 
     # 1. Process ESLint Messages
     for { messages } in results
-      if messages.length > 0
-        context.hasErrors = true
       for message, index in messages
-        printHeader()
-        console.warn "" if isPretty() and index > 0
+        header = getHeader()
         transposed = transpose message, sourceMap
         transposed.code = message.ruleId
         excerpt = lines?[ transposed.line - 1 ]?.trim()
         formatted = format transposed, excerpt, source.path
-        if error == transposed.severity
-          console.error formatted
-        else
-          console.warn formatted
+        
+        text = if header then "#{header}\n#{formatted}" else formatted
+        context.issues.push { text, isError: error == transposed.severity }
 
     # 2. Process Custom CoffeeScript Static Rules
     if lines?
       customMessages = checkCustomRules lines
-      if customMessages.length > 0
-        context.hasErrors = true
       for message, index in customMessages
-        printHeader()
-        console.warn "" if isPretty() and (index > 0 or results[0]?.messages?.length > 0)
+        header = getHeader()
         excerpt = lines?[ message.line - 1 ]?.trim()
         formatted = format message, excerpt, source.path
-        if error == message.severity
-          console.error formatted
-        else
-          console.warn formatted
+        
+        text = if header then "#{header}\n#{formatted}" else formatted
+        context.issues.push { text, isError: error == message.severity }
 
     context
 

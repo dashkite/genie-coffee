@@ -10,17 +10,26 @@ export default ( name, fx ) ->
       sourceStat = await FS.stat sourcePath
       cacheStat = await FS.stat cachePath
       if cacheStat.mtimeMs >= sourceStat.mtimeMs
+        try
+          data = JSON.parse await FS.readFile cachePath, "utf8"
+          Object.assign context, data
+        catch
+          # ignore parse errors
         return context
     catch
-      # Continue if cache or source stat fails
       null
       
     current = context
     for f in fx
       current = await f current
       
-    unless current?.hasErrors
-      await FS.mkdir (Path.dirname cachePath), recursive: true
-      await FS.writeFile cachePath, ""
+    await FS.mkdir (Path.dirname cachePath), recursive: true
+    
+    dataToCache = {}
+    if current?.cacheable?
+      for key in current.cacheable
+        dataToCache[key] = current[key]
+        
+    await FS.writeFile cachePath, JSON.stringify(dataToCache)
     
     current
