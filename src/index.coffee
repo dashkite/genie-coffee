@@ -3,7 +3,11 @@ import coffee from "@dashkite/masonry-coffee"
 import T from "@dashkite/masonry-targets"
 import { sh, exists } from "./helpers"
 import lint from "./helpers/lint"
+import fix from "./helpers/fix"
+import audit from "./helpers/audit"
 import Options from "./helpers/options"
+
+import cached from "./helpers/cached"
 
 export default ( Genie ) ->
 
@@ -35,6 +39,24 @@ export default ( Genie ) ->
     T.write "build/${ build.preset }"
   ]
   
+  Genie.define "coffee:lint:fix", M.start [
+    T.glob targets
+    M.read
+    fix
+  ]
+  
+  Genie.on "lint:fix", "coffee:lint:fix"
+
+  Genie.define "coffee:audit", M.start [
+    T.glob targets
+    cached "audit", [
+      M.read
+      audit
+    ]
+  ]
+
+  Genie.on "audit", "coffee:audit"
+
   Genie.define "coffee:test", "build", ->
     if await exists "build/node/test/index.js"
       sh "node

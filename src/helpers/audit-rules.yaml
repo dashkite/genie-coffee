@@ -1,0 +1,5 @@
+- title: "Superfluous Defensive Checks"
+  description: >
+    Identify any defensive checks (like `return null unless obj?` or `if !invoice then return 0`) 
+    that mask logic errors or unexpected nil values instead of failing fast. Defensive programming 
+    should only be used when a missing value is a valid, expected domain state.
