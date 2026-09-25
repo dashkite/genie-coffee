@@ -5,28 +5,24 @@ import path from "node:path"
 rulesFile = path.join __dirname, "lint-rules.yaml"
 rulesConfig = yaml.load fs.readFileSync rulesFile, "utf8"
 
-parseBlackboard = (blackboardPath) ->
-  return [] unless blackboardPath and fs.existsSync blackboardPath
-  content = fs.readFileSync blackboardPath, "utf8"
-  issues = []
-  regex = /<issue[^>]*file="([^"]+)"[^>]*code="([^"]+)"[^>]*>/g
-  while (match = regex.exec content) != null
-    issues.push
-      file: match[1]
-      code: match[2]
-  issues
-
 fix = ( context ) ->
   { source, input } = context
   return context unless input?
   
-  blackboardPath = process.env.LINT_BLACKBOARD
-  if blackboardPath
-    issues = parseBlackboard blackboardPath
-    fileIssues = issues.filter (i) -> i.file == source.path
+  # Read issues from the lint cache directly
+  cachePath = path.join ".masonry", "lint", source.path
+  try
+    data = JSON.parse fs.readFileSync cachePath, "utf8"
+    fileIssues = data.issues ? []
+  catch
+    fileIssues = []
+    
+  if fs.existsSync(path.join ".masonry", "lint")
+    # If the cache directory exists, we strictly follow the cache
     return context if fileIssues.length == 0
     activeCodes = new Set(fileIssues.map (i) -> i.code)
   else
+    # Fallback to checking all rules if lint hasn't run
     activeCodes = new Set(rulesConfig.map (r) -> r.id)
   
   lines = input.split "\n"

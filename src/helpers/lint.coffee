@@ -189,7 +189,7 @@ lint = do ({ warn, error } = {}) ->
         formatted = format transposed, excerpt, source.path
         
         text = if header then "#{header}\n#{formatted}" else formatted
-        context.issues.push { text, isError: error == transposed.severity }
+        context.issues.push { text, isError: error == transposed.severity, code: transposed.code }
 
     # 2. Process Custom CoffeeScript Static Rules
     if lines?
@@ -200,7 +200,7 @@ lint = do ({ warn, error } = {}) ->
         formatted = format message, excerpt, source.path
         
         text = if header then "#{header}\n#{formatted}" else formatted
-        context.issues.push { text, isError: error == message.severity }
+        context.issues.push { text, isError: error == message.severity, code: message.code }
 
     context
 
