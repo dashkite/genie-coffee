@@ -28,15 +28,17 @@ export default ( Genie ) ->
 
   Genie.define "coffee:clean", "clean"
 
-  Genie.define "coffee:lint", "coffee:clean", M.start [
+  Genie.define "coffee:lint", M.start [
     T.glob targets
-    M.read
-    M.tr coffee
-    lint
-    # we write out the code so that we can reference it
-    # in case we want to see why lint is complaining
-    M.extension ".js"
-    T.write "build/${ build.preset }"
+    cached "lint", [
+      M.read
+      M.tr coffee
+      lint
+      # we write out the code so that we can reference it
+      # in case we want to see why lint is complaining
+      M.extension ".js"
+      T.write "build/${ build.preset }"
+    ]
   ]
   
   Genie.define "coffee:lint:fix", M.start [
