@@ -41,6 +41,11 @@ export default ( Genie ) ->
     ]
   ]
   
+  Genie.define "coffee:lint:clean", ->
+    sh "rm -rf .masonry/lint"
+
+  Genie.on "lint:clean", "coffee:lint:clean"
+  
   Genie.define "coffee:lint:fix", M.start [
     T.glob targets
     M.read
@@ -58,6 +63,11 @@ export default ( Genie ) ->
   ]
 
   Genie.on "audit", "coffee:audit"
+
+  Genie.define "coffee:audit:clean", ->
+    sh "rm -rf .masonry/audit"
+
+  Genie.on "audit:clean", "coffee:audit:clean"
 
   Genie.define "coffee:test", "build", ->
     if await exists "build/node/test/index.js"
