@@ -19,7 +19,8 @@ export default ( name, fx ) ->
     for f in fx
       current = await f current
       
-    await FS.mkdir (Path.dirname cachePath), recursive: true
-    await FS.writeFile cachePath, ""
+    unless current?.hasErrors
+      await FS.mkdir (Path.dirname cachePath), recursive: true
+      await FS.writeFile cachePath, ""
     
     current
